@@ -1,5 +1,7 @@
 package com.adamzareba.spring.security.oauth2.config.server;
 
+import com.adamzareba.spring.security.oauth2.config.authentication.UniqueAuthenticationKeyGenerator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +43,9 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
+        JdbcTokenStore tokenStore = new JdbcTokenStore(dataSource);
+        tokenStore.setAuthenticationKeyGenerator(new UniqueAuthenticationKeyGenerator());
+        return tokenStore;
     }
 
     @Bean
